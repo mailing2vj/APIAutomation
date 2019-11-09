@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Test Automation Tests" parallel="tests" thread-count="3" preserve-order="true">
+
+	<parameter name="baseURL" value= "https://ec2-13-232-224-131.ap-south-1.compute.amazonaws.com/sharebox/api" />
+	<parameter name="accessToken" value= "ec114027-d236-4ab2-a92f-f07f84a7574d" />
+	<parameter name="contentType" value= "application/json" />
+
+	
+	<!-- TestNg Listener for Report Generation -->
+	<listeners>
+		<listener
+			class-name="org.testng.reporters.EmailableReporter2" />
+	</listeners>
+
+	<!-- Test -->
+
+	<test name="API-Tests_today" enabled="true">
+		<classes>
+			<class name="API.Tests.APITests_today" />
+		</classes>
+	</test>
+
+</suite>
