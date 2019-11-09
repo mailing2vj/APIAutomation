@@ -1,11 +1,14 @@
 package API.Tests;
 
+import static org.testng.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.*;
 import org.testng.xml.XmlTest;
@@ -96,12 +99,12 @@ public class APITests_today {
 	public void UploadFileusingPOST() throws Exception
 	{
 		try {
-			
+
 			System.out.print("baseURL---------------");
 			// Instantiate the extent test.
 			String description = Reporter.getCurrentTestResult().getMethod().getDescription();
 			String methodName = Reporter.getCurrentTestResult().getMethod().getMethodName();
-			
+
 			test = extentReport.createTest(methodName, description).assignCategory("API Test").assignAuthor("VJ");
 
 			body.put("fileId","1213");
@@ -111,10 +114,10 @@ public class APITests_today {
 			Response response = RestAssuredAPI.POST(baseURL, accessToken, contentType, body, postURL,test);
 
 			test.log(Status.INFO, "");
-			
+
 			System.out.print("RESPPP :"+response);
 			String resp = null;
-			
+
 			// Assert that post request is success.
 			if(!response.asString().contains("\"success\":true"))
 				test.fail("Test case failed."
@@ -129,20 +132,27 @@ public class APITests_today {
 				resp = response.getBody().toString();
 				if(resp.contains("status")&&resp.contains("name")&&resp.contains("fileHash")&&resp.contains("createdOn")&&resp.contains("bytesComplted")
 						&&resp.contains("size")&&resp.contains("fileId"))
- 				test.pass("Test case passed. File details returned for the file :"+resp.split("fileId:")[1]
- 
-						+ "<br>Additional info. : Response - "+ response.asString());
+					test.pass("Test case passed. File details returned for the file :"+resp.split("fileId:")[1]
+
+							+ "<br>Additional info. : Response - "+ response.asString());
 			}
 			else
+			{
 				test.fail("Test case failed. File details returned for the file :"
-						 
+
 						+ "<br>Additional info. : Response - "+ response.asString());
+				Assert.fail("Failed");
+
+			}
+
 		}
 		catch(Exception ex)
 		{
 			test.error(ex);
+
+			Assert.fail("Failed");
 		}
 	} // End CreateUserUsingPostRequest
 
-	
+
 }
